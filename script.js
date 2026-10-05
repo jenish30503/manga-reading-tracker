@@ -51,6 +51,68 @@ function addTitle(event) {
     // reset the form after adding
     titleForm.reset();
     chapterInput.value = '0';
+
+    renderTitles();
+}
+
+// build and show the title cards on the page
+function renderTitles() {
+    // clear old cards first
+    while (cardsSection.firstChild) {
+        cardsSection.removeChild(cardsSection.firstChild);
+    }
+
+    // build a card for each title
+    titles.forEach(function (title) {
+        let card = document.createElement('article');
+        card.classList.add('card');
+
+        // cover block with the first letter of the title
+        let cover = document.createElement('div');
+        cover.classList.add('card-cover');
+        cover.textContent = title.name.charAt(0).toUpperCase();
+        card.appendChild(cover);
+
+        // title name
+        let nameEl = document.createElement('h3');
+        nameEl.classList.add('card-title');
+        nameEl.textContent = title.name;
+        card.appendChild(nameEl);
+
+        // type label
+        let typeEl = document.createElement('p');
+        typeEl.classList.add('card-info');
+        typeEl.textContent = 'Type: ' + title.type;
+        card.appendChild(typeEl);
+
+        // status label
+        let statusEl = document.createElement('p');
+        statusEl.classList.add('card-info');
+        statusEl.textContent = 'Status: ' + title.status;
+        card.appendChild(statusEl);
+
+        // current chapter
+        let chapterEl = document.createElement('p');
+        chapterEl.classList.add('card-info');
+        chapterEl.textContent = 'Chapter: ' + title.chapter;
+        card.appendChild(chapterEl);
+
+        // rating
+        let ratingEl = document.createElement('p');
+        ratingEl.classList.add('card-info');
+        ratingEl.textContent = 'Rating: ' + title.rating;
+        card.appendChild(ratingEl);
+
+        // only show notes if the user wrote something
+        if (title.notes !== '') {
+            let notesEl = document.createElement('p');
+            notesEl.classList.add('card-notes');
+            notesEl.textContent = title.notes;
+            card.appendChild(notesEl);
+        }
+
+        cardsSection.appendChild(card);
+    });
 }
 
 // listen for form submit
