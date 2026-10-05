@@ -4,6 +4,9 @@ let titles = [];
 // which status tab is active right now
 let currentStatus = 'All';
 
+// the id of the title being edited, or null if we are adding a new one
+let editingId = null;
+
 // grab the form and input elements
 const titleForm = document.getElementById('title-form');
 const titleInput = document.getElementById('title-input');
@@ -13,6 +16,7 @@ const chapterInput = document.getElementById('chapter-input');
 const ratingSelect = document.getElementById('rating-select');
 const notesInput = document.getElementById('notes-input');
 const submitBtn = document.getElementById('submit-btn');
+const cancelBtn = document.getElementById('cancel-btn');
 const searchBox = document.getElementById('search-box');
 const cardsSection = document.getElementById('cards-section');
 const tabButtons = document.querySelectorAll('.tab-btn');
@@ -37,7 +41,7 @@ function saveTitles() {
     localStorage.setItem('manga-titles', JSON.stringify(titles));
 }
 
-// add a new title to the list
+// add a new title or save changes to an existing one
 function addTitle(event) {
     event.preventDefault();
 
@@ -60,20 +64,38 @@ function addTitle(event) {
         return;
     }
 
-    // create a new title object with a unique id
-    let newTitle = {
-        id: Date.now(),
-        name: name,
-        type: type,
-        status: status,
-        chapter: chapter,
-        rating: rating,
-        notes: notes
-    };
+    // if we are editing, update the existing title
+    if (editingId !== null) {
+        for (let i = 0; i < titles.length; i++) {
+            if (titles[i].id === editingId) {
+                titles[i].name = name;
+                titles[i].type = type;
+                titles[i].status = status;
+                titles[i].chapter = chapter;
+                titles[i].rating = rating;
+                titles[i].notes = notes;
+                break;
+            }
+        }
+        // go back to add mode
+        editingId = null;
+        submitBtn.textContent = 'Add Title';
+        cancelBtn.classList.add('hidden');
+    } else {
+        // create a new title object with a unique id
+        let newTitle = {
+            id: Date.now(),
+            name: name,
+            type: type,
+            status: status,
+            chapter: chapter,
+            rating: rating,
+            notes: notes
+        };
+        titles.push(newTitle);
+    }
 
-    titles.push(newTitle);
-
-    // reset the form after adding
+    // reset the form after adding or editing
     titleForm.reset();
     chapterInput.value = '0';
 
@@ -102,6 +124,45 @@ function addChapter(id) {
     }
     saveTitles();
     renderTitles();
+}
+
+// fill the form with a title's data so the user can edit it
+function editTitle(id) {
+    let found = null;
+    for (let i = 0; i < titles.length; i++) {
+        if (titles[i].id === id) {
+            found = titles[i];
+            break;
+        }
+    }
+    if (found === null) {
+        return;
+    }
+
+    // put the values in the form
+    titleInput.value = found.name;
+    typeSelect.value = found.type;
+    statusSelect.value = found.status;
+    chapterInput.value = found.chapter;
+    ratingSelect.value = found.rating;
+    notesInput.value = found.notes;
+
+    // switch the button to save mode and show cancel
+    editingId = id;
+    submitBtn.textContent = 'Save changes';
+    cancelBtn.classList.remove('hidden');
+
+    // scroll up so the user can see the form
+    window.scrollTo(0, 0);
+}
+
+// cancel editing and go back to add mode
+function cancelEdit() {
+    editingId = null;
+    submitBtn.textContent = 'Add Title';
+    cancelBtn.classList.add('hidden');
+    titleForm.reset();
+    chapterInput.value = '0';
 }
 
 // switch the active status tab and re-render
@@ -230,6 +291,14 @@ function renderTitles() {
         });
         buttonsDiv.appendChild(plusBtn);
 
+        // edit button
+        let editBtn = document.createElement('button');
+        editBtn.textContent = 'Edit';
+        editBtn.addEventListener('click', function () {
+            editTitle(title.id);
+        });
+        buttonsDiv.appendChild(editBtn);
+
         // delete button
         let delBtn = document.createElement('button');
         delBtn.textContent = 'Delete';
@@ -249,6 +318,9 @@ function renderTitles() {
 
 // listen for form submit
 titleForm.addEventListener('submit', addTitle);
+
+// cancel editing when the cancel button is clicked
+cancelBtn.addEventListener('click', cancelEdit);
 
 // filter cards as the user types in the search box
 searchBox.addEventListener('keyup', function () {
