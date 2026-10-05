@@ -55,6 +55,27 @@ function addTitle(event) {
     renderTitles();
 }
 
+// delete a title after the user confirms
+function deleteTitle(id) {
+    if (window.confirm('Delete this title?')) {
+        titles = titles.filter(function (title) {
+            return title.id !== id;
+        });
+        renderTitles();
+    }
+}
+
+// add 1 to the chapter number and save
+function addChapter(id) {
+    for (let i = 0; i < titles.length; i++) {
+        if (titles[i].id === id) {
+            titles[i].chapter = titles[i].chapter + 1;
+            break;
+        }
+    }
+    renderTitles();
+}
+
 // build and show the title cards on the page
 function renderTitles() {
     // clear old cards first
@@ -111,6 +132,28 @@ function renderTitles() {
             card.appendChild(notesEl);
         }
 
+        // buttons row
+        let buttonsDiv = document.createElement('div');
+        buttonsDiv.classList.add('card-buttons');
+
+        // +1 chapter button
+        let plusBtn = document.createElement('button');
+        plusBtn.textContent = '+1 Chapter';
+        plusBtn.addEventListener('click', function () {
+            addChapter(title.id);
+        });
+        buttonsDiv.appendChild(plusBtn);
+
+        // delete button
+        let delBtn = document.createElement('button');
+        delBtn.textContent = 'Delete';
+        delBtn.classList.add('btn-delete');
+        delBtn.addEventListener('click', function () {
+            deleteTitle(title.id);
+        });
+        buttonsDiv.appendChild(delBtn);
+
+        card.appendChild(buttonsDiv);
         cardsSection.appendChild(card);
     });
 }
