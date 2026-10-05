@@ -283,3 +283,37 @@ footer {
     color: #888;
     border-top: 1px solid #e0d8d0;
 }
+
+/* === Responsive (phones under 768px) === */
+@media (max-width: 768px) {
+    header h1 {
+        font-size: 1.3rem;
+    }
+
+    main {
+        padding: 14px;
+    }
+
+    #cards-section {
+        grid-template-columns: 1fr;
+    }
+
+    #summary-section {
+        flex-direction: column;
+        gap: 6px;
+    }
+
+    .form-buttons {
+        flex-direction: column;
+    }
+
+    #submit-btn,
+    #cancel-btn {
+        width: 100%;
+    }
+
+    .tab-btn {
+        padding: 8px 12px;
+        font-size: 0.85rem;
+    }
+}
