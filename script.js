@@ -12,6 +12,20 @@ const notesInput = document.getElementById('notes-input');
 const submitBtn = document.getElementById('submit-btn');
 const cardsSection = document.getElementById('cards-section');
 
+// load titles from localStorage, or return empty array on first visit
+function loadTitles() {
+    let saved = localStorage.getItem('manga-titles');
+    if (saved) {
+        return JSON.parse(saved);
+    }
+    return [];
+}
+
+// save the titles array to localStorage
+function saveTitles() {
+    localStorage.setItem('manga-titles', JSON.stringify(titles));
+}
+
 // add a new title to the list
 function addTitle(event) {
     event.preventDefault();
@@ -52,6 +66,7 @@ function addTitle(event) {
     titleForm.reset();
     chapterInput.value = '0';
 
+    saveTitles();
     renderTitles();
 }
 
@@ -61,6 +76,7 @@ function deleteTitle(id) {
         titles = titles.filter(function (title) {
             return title.id !== id;
         });
+        saveTitles();
         renderTitles();
     }
 }
@@ -73,6 +89,7 @@ function addChapter(id) {
             break;
         }
     }
+    saveTitles();
     renderTitles();
 }
 
@@ -160,3 +177,7 @@ function renderTitles() {
 
 // listen for form submit
 titleForm.addEventListener('submit', addTitle);
+
+// load saved titles when the page opens
+titles = loadTitles();
+renderTitles();
