@@ -10,6 +10,7 @@ const chapterInput = document.getElementById('chapter-input');
 const ratingSelect = document.getElementById('rating-select');
 const notesInput = document.getElementById('notes-input');
 const submitBtn = document.getElementById('submit-btn');
+const searchBox = document.getElementById('search-box');
 const cardsSection = document.getElementById('cards-section');
 
 // load titles from localStorage, or return empty array on first visit
@@ -100,8 +101,17 @@ function renderTitles() {
         cardsSection.removeChild(cardsSection.firstChild);
     }
 
-    // build a card for each title
-    titles.forEach(function (title) {
+    // get the search text and make it lowercase for matching
+    let searchTerm = searchBox.value.trim().toLowerCase();
+
+    // filter titles by search term
+    let filtered = titles.filter(function (title) {
+        let matchesSearch = title.name.toLowerCase().indexOf(searchTerm) !== -1;
+        return matchesSearch;
+    });
+
+    // build a card for each title that matches
+    filtered.forEach(function (title) {
         let card = document.createElement('article');
         card.classList.add('card');
 
@@ -177,6 +187,11 @@ function renderTitles() {
 
 // listen for form submit
 titleForm.addEventListener('submit', addTitle);
+
+// filter cards as the user types in the search box
+searchBox.addEventListener('keyup', function () {
+    renderTitles();
+});
 
 // load saved titles when the page opens
 titles = loadTitles();
