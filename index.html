@@ -13,6 +13,83 @@
     </header>
 
     <main>
+        <section id="form-section">
+            <h2>Add a Title</h2>
+            <form id="title-form">
+                <div class="form-row">
+                    <label for="title-input">Title</label>
+                    <input type="text" id="title-input" placeholder="e.g. Solo Leveling">
+                </div>
+                <div class="form-row">
+                    <label for="type-select">Type</label>
+                    <select id="type-select">
+                        <option value="Manga">Manga</option>
+                        <option value="Manhwa">Manhwa</option>
+                        <option value="Webtoon">Webtoon</option>
+                        <option value="Anime">Anime</option>
+                    </select>
+                </div>
+                <div class="form-row">
+                    <label for="status-select">Status</label>
+                    <select id="status-select">
+                        <option value="Reading">Reading</option>
+                        <option value="Plan to read">Plan to read</option>
+                        <option value="Completed">Completed</option>
+                        <option value="Dropped">Dropped</option>
+                    </select>
+                </div>
+                <div class="form-row">
+                    <label for="chapter-input">Current Chapter</label>
+                    <input type="number" id="chapter-input" min="0" value="0">
+                </div>
+                <div class="form-row">
+                    <label for="rating-select">Rating</label>
+                    <select id="rating-select">
+                        <option value="No rating">No rating</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                        <option value="6">6</option>
+                        <option value="7">7</option>
+                        <option value="8">8</option>
+                        <option value="9">9</option>
+                        <option value="10">10</option>
+                    </select>
+                </div>
+                <div class="form-row">
+                    <label for="notes-input">Notes</label>
+                    <textarea id="notes-input" placeholder="Optional notes..."></textarea>
+                </div>
+                <div class="form-buttons">
+                    <button type="submit" id="submit-btn">Add Title</button>
+                </div>
+            </form>
+        </section>
+
+        <section id="search-section">
+            <label for="search-box">Search by title</label>
+            <input type="text" id="search-box" placeholder="Type to search...">
+        </section>
+
+        <section id="tabs-section">
+            <button class="tab-btn active" data-status="All">All</button>
+            <button class="tab-btn" data-status="Reading">Reading</button>
+            <button class="tab-btn" data-status="Plan to read">Plan to read</button>
+            <button class="tab-btn" data-status="Completed">Completed</button>
+            <button class="tab-btn" data-status="Dropped">Dropped</button>
+        </section>
+
+        <section id="summary-section">
+            <span id="total-count">Total: 0</span>
+            <span id="reading-count">Reading: 0</span>
+            <span id="completed-count">Completed: 0</span>
+            <span id="avg-rating">Avg Rating: No ratings yet</span>
+        </section>
+
+        <section id="cards-section">
+        </section>
     </main>
 
     <footer>
