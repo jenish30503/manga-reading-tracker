@@ -17,6 +17,12 @@ const searchBox = document.getElementById('search-box');
 const cardsSection = document.getElementById('cards-section');
 const tabButtons = document.querySelectorAll('.tab-btn');
 
+// summary elements
+const totalCount = document.getElementById('total-count');
+const readingCount = document.getElementById('reading-count');
+const completedCount = document.getElementById('completed-count');
+const avgRating = document.getElementById('avg-rating');
+
 // load titles from localStorage, or return empty array on first visit
 function loadTitles() {
     let saved = localStorage.getItem('manga-titles');
@@ -111,6 +117,41 @@ function changeTab(event) {
     renderTitles();
 }
 
+// update the summary numbers above the cards
+function updateSummary() {
+    let total = titles.length;
+    let reading = 0;
+    let completed = 0;
+    let ratingSum = 0;
+    let ratingNum = 0;
+
+    // count up the stats from all titles
+    titles.forEach(function (title) {
+        if (title.status === 'Reading') {
+            reading = reading + 1;
+        }
+        if (title.status === 'Completed') {
+            completed = completed + 1;
+        }
+        if (title.rating !== 'No rating') {
+            ratingSum = ratingSum + parseInt(title.rating);
+            ratingNum = ratingNum + 1;
+        }
+    });
+
+    totalCount.textContent = 'Total: ' + total;
+    readingCount.textContent = 'Reading: ' + reading;
+    completedCount.textContent = 'Completed: ' + completed;
+
+    // show the average rating, or a message if nobody rated anything yet
+    if (ratingNum === 0) {
+        avgRating.textContent = 'Avg Rating: No ratings yet';
+    } else {
+        let avg = (ratingSum / ratingNum).toFixed(1);
+        avgRating.textContent = 'Avg Rating: ' + avg;
+    }
+}
+
 // build and show the title cards on the page
 function renderTitles() {
     // clear old cards first
@@ -201,6 +242,9 @@ function renderTitles() {
         card.appendChild(buttonsDiv);
         cardsSection.appendChild(card);
     });
+
+    // update the summary every time we render
+    updateSummary();
 }
 
 // listen for form submit
