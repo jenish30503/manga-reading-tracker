@@ -1,6 +1,9 @@
 // the main array that holds all titles
 let titles = [];
 
+// which status tab is active right now
+let currentStatus = 'All';
+
 // grab the form and input elements
 const titleForm = document.getElementById('title-form');
 const titleInput = document.getElementById('title-input');
@@ -12,6 +15,7 @@ const notesInput = document.getElementById('notes-input');
 const submitBtn = document.getElementById('submit-btn');
 const searchBox = document.getElementById('search-box');
 const cardsSection = document.getElementById('cards-section');
+const tabButtons = document.querySelectorAll('.tab-btn');
 
 // load titles from localStorage, or return empty array on first visit
 function loadTitles() {
@@ -94,6 +98,19 @@ function addChapter(id) {
     renderTitles();
 }
 
+// switch the active status tab and re-render
+function changeTab(event) {
+    currentStatus = event.target.dataset.status;
+
+    // remove active from all tabs and add it to the clicked one
+    tabButtons.forEach(function (btn) {
+        btn.classList.remove('active');
+    });
+    event.target.classList.add('active');
+
+    renderTitles();
+}
+
 // build and show the title cards on the page
 function renderTitles() {
     // clear old cards first
@@ -104,10 +121,11 @@ function renderTitles() {
     // get the search text and make it lowercase for matching
     let searchTerm = searchBox.value.trim().toLowerCase();
 
-    // filter titles by search term
+    // filter titles by the active tab and the search text
     let filtered = titles.filter(function (title) {
+        let matchesTab = currentStatus === 'All' || title.status === currentStatus;
         let matchesSearch = title.name.toLowerCase().indexOf(searchTerm) !== -1;
-        return matchesSearch;
+        return matchesTab && matchesSearch;
     });
 
     // build a card for each title that matches
@@ -191,6 +209,11 @@ titleForm.addEventListener('submit', addTitle);
 // filter cards as the user types in the search box
 searchBox.addEventListener('keyup', function () {
     renderTitles();
+});
+
+// listen for tab clicks
+tabButtons.forEach(function (btn) {
+    btn.addEventListener('click', changeTab);
 });
 
 // load saved titles when the page opens
