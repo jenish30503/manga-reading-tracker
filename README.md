@@ -1,8 +1,9 @@
 # Manga Reading Tracker
 
-**Author:** Jenish Chaudhary
-
 A personal tracker for manga, manhwa, webtoons and anime. Keep track of what you are reading, where you stopped, and what you thought about each title. Everything is saved in your browser using localStorage — no backend, no login needed.
+
+## 📸 Screenshots
+*(Screenshot Placeholder)*
 
 ## How to Run
 
@@ -29,3 +30,9 @@ A personal tracker for manga, manhwa, webtoons and anime. Keep track of what you
 - HTML5
 - CSS3 (Flexbox, CSS Grid)
 - Vanilla JavaScript (no frameworks or libraries)
+
+## 📄 License
+This project is licensed under the [MIT License](LICENSE).
+
+---
+*Created by [jenish30503](https://github.com/jenish30503)*
