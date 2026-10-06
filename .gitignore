@@ -1,0 +1,23 @@
+# Node/Build
+node_modules/
+build/
+dist/
+
+# Env & Secrets
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+credentials.json
+serviceAccount*.json
+secrets.*
+
+# Databases
+*.db
+*.sqlite
+
+# OS & Editors
+.DS_Store
+.idea/
+.vscode/
